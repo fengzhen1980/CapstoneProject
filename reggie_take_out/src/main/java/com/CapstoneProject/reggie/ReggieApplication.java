@@ -9,6 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ReggieApplication {
     public static void main(String[] args) {
         SpringApplication.run(ReggieApplication.class, args);
-        log.info("Successful Application startup...");
+        log.info("*----> Successful Application startup...");
     }
 }
