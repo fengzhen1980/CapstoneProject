@@ -48,7 +48,7 @@ public class LoginCheckFilter implements Filter {
             return;
         }
 
-        // not login
+        // not login,go to login page.
         log.info("*----> User didn't login.");
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
         return;
