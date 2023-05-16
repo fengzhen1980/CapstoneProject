@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestController
@@ -64,12 +65,28 @@ public class EmployeeController {
 
     /**
      * add an employee
+     * @param request
      * @param employee
      * @return
      */
     @PostMapping
-    public R<String> save(@RequestBody Employee employee) {
+    public R<String> save(HttpServletRequest request, @RequestBody Employee employee) {
         log.info("*----> add an employee. The employee information: {}", employee.toString());
-        return null;
+
+        // Set initial password '123456', MD5 encryption is performed
+        employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // get current user information
+        Long empId = (Long) request.getSession().getAttribute("employee");
+
+        employee.setCreateUser(empId);
+        employee.setUpdateUser(empId);
+
+        employeeService.save(employee);
+
+        return R.success("Add employee successfully");
     }
 }
