@@ -61,4 +61,15 @@ public class EmployeeController {
         request.getSession().removeAttribute("employee");
         return R.success("logout success");
     }
+
+    /**
+     * add an employee
+     * @param employee
+     * @return
+     */
+    @PostMapping
+    public R<String> save(@RequestBody Employee employee) {
+        log.info("*----> add an employee. The employee information: {}", employee.toString());
+        return null;
+    }
 }
