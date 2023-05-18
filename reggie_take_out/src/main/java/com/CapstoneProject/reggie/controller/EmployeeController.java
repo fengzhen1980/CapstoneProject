@@ -113,4 +113,31 @@ public class EmployeeController {
 
         return R.success(pageInfo);
     }
+
+    /**
+     * Modify employee information based on id
+     * @param employee
+     * @return
+     */
+    @PutMapping
+    public R<String> update(HttpServletRequest request, @RequestBody Employee employee) {
+        log.info("*----> " + employee.toString());
+
+        Long empId = (Long) request.getSession().getAttribute("employee");
+        employee.setUpdateUser(empId);
+        employee.setUpdateTime(LocalDateTime.now());
+
+        employeeService.updateById(employee);
+        return R.success("Employee information is modified successfully.");
+    }
+
+    @GetMapping("/{id}")
+    public R<Employee> getById(@PathVariable Long id) {
+
+        Employee employee = employeeService.getById(id);
+        if(employee != null) {
+            return R.success(employee);
+        }
+        return R.error("The employee information isn't found.");
+    }
 }
