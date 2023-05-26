@@ -1,8 +1,10 @@
 package com.CapstoneProject.reggie.filter;
 
+import com.CapstoneProject.reggie.common.BaseContext;
 import com.CapstoneProject.reggie.common.R;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;
@@ -44,6 +46,10 @@ public class LoginCheckFilter implements Filter {
         // if there is employee information in Session, it can be released.
         if(request.getSession().getAttribute("employee") != null) {
             log.info("*----> User logged in. User id:{}", request.getSession().getAttribute("employee"));
+
+            Long empId = (Long) request.getSession().getAttribute("employee");
+            BaseContext.setCurrentId(empId);
+
             filterChain.doFilter(request,response);
             return;
         }
