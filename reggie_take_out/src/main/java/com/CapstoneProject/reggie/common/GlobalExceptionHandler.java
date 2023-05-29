@@ -16,11 +16,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public R<String> exceptionHandler(SQLIntegrityConstraintViolationException ex) {
-        log.error(ex.getMessage());
+        log.error("*----> " + ex.getMessage());
 
         if(ex.getMessage().contains("Duplicate entry")) {
-            String[] split = ex.getMessage().split(" ");
-            String msg = split[2] + " is existed";
+//            String[] split = ex.getMessage().split(" ");
+//            String msg = split[2] + " is existed";
+            int index1 = ex.getMessage().indexOf('\'');
+            int index2 = ex.getMessage().indexOf('\'',index1 + 1);
+            String msg = ex.getMessage().substring(index1, index2 + 1) + " is existed";
             return R.error(msg);
         }
 
