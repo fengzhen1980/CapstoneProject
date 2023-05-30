@@ -42,4 +42,13 @@ public class CategoryController {
 
         return R.success(pageInfo);
     }
+
+    @DeleteMapping
+    public R<String> delete(long id) {
+
+        log.info("*----> delete category,id={}", id);
+
+        categoryService.removeById(id);
+        return R.success("Delete successful");
+    }
 }
