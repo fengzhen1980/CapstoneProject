@@ -44,11 +44,22 @@ public class CategoryController {
     }
 
     @DeleteMapping
-    public R<String> delete(long id) {
+    public R<String> delete(Long id) {
 
         log.info("*----> delete category,id={}", id);
 
-        categoryService.removeById(id);
+        //categoryService.removeById(id);
+        categoryService.remove(id);
+
         return R.success("Delete successful");
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody Category category) {
+
+        log.info("*----> update category");
+
+        categoryService.updateById(category);
+        return R.success("Update successful");
     }
 }
