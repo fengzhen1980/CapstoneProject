@@ -5,5 +5,9 @@ import com.CapstoneProject.reggie.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface DishService extends IService<Dish> {
-    void saveWithFlavor(DishDto dishDto);
+    public void saveWithFlavor(DishDto dishDto);
+
+    public DishDto getByIdWithFlavor(Long id);
+
+    public void updateWithFlavor(DishDto dishDto);
 }

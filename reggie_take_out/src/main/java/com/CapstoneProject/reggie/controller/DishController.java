@@ -8,12 +8,15 @@ import com.CapstoneProject.reggie.service.CategoryService;
 import com.CapstoneProject.reggie.service.DishFlavorService;
 import com.CapstoneProject.reggie.service.DishService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,9 +64,10 @@ public class DishController {
             Long categoryId = item.getCategoryId();
 
             Category category = categoryService.getById(categoryId);
-            String categoryName = category.getName();
-
-            dishDto.setCategoryName(categoryName);
+            if(category != null) {
+                String categoryName = category.getName();
+                dishDto.setCategoryName(categoryName);
+            }
 
             return dishDto;
         }).collect(Collectors.toList());
@@ -71,5 +75,53 @@ public class DishController {
         dishDtoPage.setRecords(list);
 
         return R.success(dishDtoPage);
+    }
+
+    @GetMapping("/{id}")
+    public R<DishDto> get(@PathVariable Long id){
+
+        DishDto dishDto = dishService.getByIdWithFlavor(id);
+
+        return R.success(dishDto);
+    }
+
+    @PutMapping
+    public R<String> update(@RequestBody DishDto dishDto){
+        dishService.updateWithFlavor(dishDto);
+        return R.success("Add Dish Successful!");
+    }
+
+    @PostMapping("/status/0")
+    public R<String> stopSole(String ids){
+        log.info("*----> id={}",ids);
+
+        LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
+
+        String[] idArray = ids.split(",");
+        updateWrapper.set(Dish::getStatus, 0).in(Dish::getId,idArray);
+        dishService.update(updateWrapper);
+//        for(int i = 0; i < idArray.length; i++) {
+//            updateWrapper.set(Dish::getStatus, 0).eq(Dish::getId, idArray[i]);
+//            dishService.update(updateWrapper);
+//        }
+
+        return R.success("Status update successful");
+    }
+
+    @PostMapping("/status/1")
+    public R<String> startSole(String ids){
+        log.info("*----> id={}",ids);
+
+        LambdaUpdateWrapper<Dish> updateWrapper = new LambdaUpdateWrapper<>();
+
+        String[] idArray = ids.split(",");
+        updateWrapper.set(Dish::getStatus, 1).in(Dish::getId,idArray);
+        dishService.update(updateWrapper);
+//        for(int i = 0; i < idArray.length; i++) {
+//            updateWrapper.set(Dish::getStatus, 1).eq(Dish::getId, idArray[i]);
+//            dishService.update(updateWrapper);
+//        }
+
+        return R.success("Status update successful");
     }
 }
