@@ -31,7 +31,10 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
-                "/front/**"
+                "/front/**",
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login"
         };
 
         boolean check = check(urls,requestURI);
@@ -49,6 +52,17 @@ public class LoginCheckFilter implements Filter {
 
             Long empId = (Long) request.getSession().getAttribute("employee");
             BaseContext.setCurrentId(empId);
+
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        // if there is Mobile user information in Session, it can be released.
+        if(request.getSession().getAttribute("user") != null) {
+            log.info("*----> User logged in. User id:{}", request.getSession().getAttribute("employee"));
+
+            Long userId = (Long) request.getSession().getAttribute("user");
+            BaseContext.setCurrentId(userId);
 
             filterChain.doFilter(request,response);
             return;

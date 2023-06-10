@@ -1,4 +1,4 @@
-package com.CapstoneProject.reggie.controller;
+package com.CapstoneProject.reggie.mapper.controller;
 
 import com.CapstoneProject.reggie.common.R;
 import lombok.extern.slf4j.Slf4j;
