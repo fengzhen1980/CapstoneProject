@@ -28,12 +28,12 @@
                 <div class="divItem">
                    <span>联系人：</span> 
                    <el-input placeholder=" 请填写收货人的姓名" v-model="form.consignee"  maxlength='10' class="inputUser"/></el-input>
-                   <span class="spanChecked" @click="form.sex = '1'">
-                    <i :class="{iActive:form.sex === '1'}"></i>
+                   <span class="spanChecked" @click="form.gender = '1'">
+                    <i :class="{iActive:form.gender === '1'}"></i>
                     先生
                    </span>
-                   <span class="spanChecked" @click="form.sex = '0'">
-                    <i :class="{iActive:form.sex === '0'}"></i>
+                   <span class="spanChecked" @click="form.gender = '0'">
+                    <i :class="{iActive:form.gender === '0'}"></i>
                     女士
                 </span>
                 </div>
@@ -73,7 +73,7 @@
                         form:{
                             consignee:'',//联系人
                             phone:undefined,//手机号
-                            sex:'1',//0表示女 1 表示男
+                            gender:'1',//0表示女 1 表示男
                             detail:'',//收货地址
                             label:'公司',//标签
                         },
